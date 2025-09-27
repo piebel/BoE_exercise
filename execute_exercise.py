@@ -1,7 +1,12 @@
 
-# Ensure requirements are installed before importing other modules
-import subprocess
+
+# Ensure correct Python version (3.12)
 import sys
+if not (sys.version_info.major == 3 and sys.version_info.minor == 12):
+    print(f"Error: Python 3.12 is required. You are using {sys.version.split()[0]}")
+    sys.exit(1)
+
+import subprocess
 import os
 import json
 
