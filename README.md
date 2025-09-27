@@ -23,7 +23,18 @@ This project downloads, processes, visualizes, and forecasts UK vacancy data vin
    cd <project-folder>
    ```
 
-2. **Install Python 3.8+** (if not already installed).
+
+2. **Create a Python 3.12 virtual environment** (recommended):
+   Ensure you have Python 3.12 installed. Then run:
+   ```sh
+   python3.12 -m venv .venv
+   # Activate the environment:
+   # On Windows:
+   .venv\Scripts\activate
+   # On macOS/Linux:
+   source .venv/bin/activate
+   ```
+   If you do not have Python 3.12, download it from https://www.python.org/downloads/release/python-3120/
 
 
 3. **Install dependencies** (automatically handled by `execute_exercise.py`, or manually):
