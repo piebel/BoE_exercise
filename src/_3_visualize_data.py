@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import os
 import re
 from datetime import datetime
-from _0_utils import select_month_popup
+from _0_utils import select_month_popup, extract_vintage_date
 
 
 
@@ -31,24 +31,6 @@ else:
     vintages = vintages.reset_index().rename(columns={'index': 'Vintage'})
     # sort vintages by date if possible
    
-    def extract_vintage_date(v):
-        """Extract the date from the vintage string.
-
-        Args:
-            v (str): The vintage string.
-
-        Returns:
-            datetime: The extracted date or a maximum datetime if parsing fails.
-        """
-        match = re.search(r'(\d{2}-\d{2}-\d{4})', v)
-        if match:
-            try:
-                return datetime.strptime(match.group(1), '%d-%m-%Y')
-            except Exception:
-                return datetime.max
-        return datetime.max
-    
-
     vintages = vintages.sort_values(by='Vintage', key=lambda x: x.apply(extract_vintage_date)) # sort using the extracted dates
     # plot
     os.makedirs(output_folder, exist_ok=True)
