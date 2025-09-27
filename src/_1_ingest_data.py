@@ -18,8 +18,13 @@ soup = BeautifulSoup(response.text, 'html.parser')
 
 # find all links that match the CSV link pattern and end with a version-like suffix (e.g., v117)
 csv_links = []
+
+# this regex matches ONS CSV download links that:
+# contain 'generator?format=csv&uri=' (the CSV generator endpoint)
+# end with a version suffix like '/v117' (where 117 is any number)
 pattern = re.compile(r'generator\?format=csv&uri=.*?/v\d+$')
-for a in soup.find_all('a', href=True):
+
+for a in soup.find_all('a', href=True): # parse through html page components to find links
     href = a['href']
     if pattern.search(href):
         # make sure the link is absolute
@@ -60,7 +65,7 @@ def extract_release_date(csv_content):
 for i, link in enumerate(csv_links):
     logging.info(f"Downloading {link}...")
     r = requests.get(link)
-    r.raise_for_status()
+    r.raise_for_status() # raise an error if the download request returned an unsuccessful status code
     release_date = extract_release_date(r.content)
     if release_date:
         filename = os.path.join(dest_folder, f"vintage_{release_date}.csv")
