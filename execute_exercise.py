@@ -1,14 +1,31 @@
 
 
-import os
+# Ensure requirements are installed before importing other modules
+import importlib.util
+import importlib
 import subprocess
 import sys
-import logging
+import os
 
-from src._0_utils import install_missing_requirements
+def _install_missing_requirements(requirements_path):
+    """Install missing Python packages listed in a requirements file.
+
+    Args:
+        requirements_path (str): The path to the requirements file.
+
+    Raises:
+        ImportError: If src._0_utils cannot be found.
+    """
+    spec = importlib.util.find_spec('src._0_utils')
+    if spec is None:
+        raise ImportError('src._0_utils must be present in src directory.')
+    _0_utils = importlib.import_module('src._0_utils')
+    _0_utils.install_missing_requirements(requirements_path)
 
 requirements_path = os.path.join(os.path.dirname(__file__), 'requirements.txt')
-install_missing_requirements(requirements_path)
+_install_missing_requirements(requirements_path)
+
+import logging
 
 
 
