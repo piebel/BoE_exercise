@@ -5,4 +5,3 @@ statsmodels
 scikit-learn
 requests
 beautifulsoup4
-json
