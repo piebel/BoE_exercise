@@ -5,7 +5,10 @@ import logging
 from _0_utils import merge_vintage_csvs, sort_vintage_columns
 
 input_folder = "input_data"
+
 output_folder = "output_data"
+# ensure output folder exists
+os.makedirs(output_folder, exist_ok=True)
 
 all_vintages = merge_vintage_csvs(input_folder)
 all_vintages = sort_vintage_columns(all_vintages)
