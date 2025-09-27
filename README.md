@@ -12,6 +12,7 @@ This project downloads, processes, visualizes, and forecasts UK vacancy data vin
    - `_4_forecast_data.py`: Forecasts future vacancy levels using the latest vintage (uses utilities).
 - `output_data/` — All outputs (merged CSVs, charts, forecast tables, etc.)
 - `requirements.txt` — Python dependencies.
+- `considerations.txt` — Personal considerations on model evaluation and future improvements 
 - `execute_exercise.py` — Runs the full pipeline in order, ensuring all dependencies are installed.
 
 ## Setup
