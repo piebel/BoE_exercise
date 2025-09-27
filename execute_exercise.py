@@ -3,13 +3,14 @@
 import os
 import subprocess
 import sys
+import logging
+
 from src._0_utils import install_missing_requirements
 
 requirements_path = os.path.join(os.path.dirname(__file__), 'requirements.txt')
 install_missing_requirements(requirements_path)
 
 
-import logging
 
 logging.basicConfig(level=logging.INFO)
 
