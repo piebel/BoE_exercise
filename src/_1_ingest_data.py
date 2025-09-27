@@ -4,6 +4,7 @@
 import logging
 import os
 import time
+import requests
 from _0_utils import extract_release_date, get_ons_csv_links
 
 # logging setup
@@ -19,7 +20,6 @@ dest_folder = "input_data"
 os.makedirs(dest_folder, exist_ok=True)
 
 
-import requests
 # Allow for proxies via environment variables (HTTP_PROXY, HTTPS_PROXY)
 proxies = {
     'http': os.environ.get('HTTP_PROXY'),
