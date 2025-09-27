@@ -1,61 +1,27 @@
+
 import logging
-logging.basicConfig(level=logging.INFO)
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import re
-import tkinter as tk
-from tkinter import ttk
 from datetime import datetime
+from _0_utils import select_month_popup
+
+
+
 
 # Load the merged vintages data
 input_folder = "output_data"
 output_folder = "output_data"
-
 df = pd.read_csv(os.path.join(input_folder, 'all_vintages.csv'))
 
 # user selects month from dropdown popup
 months_available = sorted(df['date'].dropna().unique().tolist())
+month_to_plot = select_month_popup(months_available)
 
+assert re.match(r'^\d{4}\s+[A-Z]{3}$', month_to_plot)
 
-# dropdown popup for month selection
-def select_month_popup(options):
-    """Prompt the user to select a month from a dropdown list.
-
-    Args:
-        options (list): A list of month options to choose from.
-
-    Returns:
-        str: The month selected by the user.
-    """
-    selected = {'value': None}
-    
-    def on_select(event=None):
-        """Handle the selection of a month from the dropdown.
-
-        Args:
-            event (Event, optional): The event triggering the selection. Defaults to None.
-        """
-        selected['value'] = combo.get() # get the selected month
-        win.destroy() # close the popup window
-
-    win = tk.Tk() # create a new tkinter window
-    win.title('Select Month')
-    tk.Label(win, text='Select month to plot for visualization of different vintages trends:').pack(padx=10, pady=5)
-
-    combo = ttk.Combobox(win, values=options, state='readonly') # create a dropdown combobox that is readonly and populated with month options
-    combo.pack(padx=10, pady=5) # add the combobox to the window
-    combo.current(0) # set the default selected option to the first month
-    combo.bind('<<ComboboxSelected>>', on_select) # bind the selection event to the on_select handler
-    tk.Button(win, text='OK', command=on_select).pack(pady=5) # add an OK button to confirm selection
-    win.mainloop() # start the tkinter event loop meaning the window stays open until closed
-    return selected['value'] # return the selected month
-
-month_to_plot = select_month_popup(months_available) #run the popup and get the selected month
-
-assert re.match(r'^\d{4}\s+[A-Z]{3}$', month_to_plot) #month_to_plot must be in 'YYYY MMM' format, e.g., '2021 MAR'
-
-row = df[df['date'] == month_to_plot] # filter the row for the given month
+row = df[df['date'] == month_to_plot]
 if row.empty:
     logging.info(f"No data found for {month_to_plot}")
 else:

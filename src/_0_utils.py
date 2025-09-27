@@ -5,14 +5,35 @@ This module contains utility functions shared across the project scripts.
 
 import os
 import re
-import logging
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-import matplotlib.pyplot as plt
 import tkinter as tk
 from tkinter import ttk
+import importlib.util
+import subprocess
+import sys
+
+def install_missing_requirements(requirements_path):
+    """Install missing Python packages listed in a requirements file.
+
+    Args:
+        requirements_path (str): The path to the requirements file.
+    """
+    with open(requirements_path) as f:
+        required = [line.strip() for line in f if line.strip() and not line.startswith('#')]
+    missing = []
+    for req in required:
+        pkg_name = req.split('[')[0].split('==')[0].replace('-', '_')
+        if importlib.util.find_spec(pkg_name) is None:
+            missing.append(req)
+    if missing:
+        print(f"Installing missing packages: {missing}")
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', *missing])
+    else:
+        print("All required packages are already installed.")
+
 
 # --- Ingest Data Utilities ---
 def extract_release_date(csv_content):
@@ -29,7 +50,10 @@ def extract_release_date(csv_content):
         if 'Release date' in line:
             parts = line.split(',')
             if len(parts) > 1:
-                return parts[1].strip()
+                date_str = parts[1].strip()
+                # Remove invalid filename characters (including quotes)
+                date_str = re.sub(r'[<>:"/\\|?*\'\"]', '', date_str)
+                return date_str
     return None
 
 def get_ons_csv_links(url, max_files=25):

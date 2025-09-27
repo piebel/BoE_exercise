@@ -1,9 +1,10 @@
 import logging
-logging.basicConfig(level=logging.INFO)
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
+from _0_utils import moving_average_forecast
 
+logging.basicConfig(level=logging.INFO)
 
 # ensure output folder exists
 output_folder = "output_data"
@@ -21,22 +22,16 @@ series[latest_vintage] = pd.to_numeric(series[latest_vintage], errors='coerce')
 series = series.dropna()
 
 # convert 'date' to datetime (assume format 'YYYY MMM')
-
 series['date'] = pd.to_datetime(series['date'], format='%Y %b')
 series = series.set_index('date')
 series = series.asfreq('MS')  # set frequency to month start
 
-
-# rolling moving average forecast: for each future month, use the mean of the previous 12 values (including previous forecasts)
-window = 12 # 12-month moving average
-history = list(series[latest_vintage].tail(window)) # last 12 months of actual data
-future_dates = pd.date_range(series.index[-1] + pd.offsets.MonthBegin(), periods=12, freq='MS') # this line generates the next 12 months of dates using pd.date_range to ensure correct monthly frequency
-forecast_values = [] # to hold forecasted values
-for _ in range(12): # for each future month
-	next_value = sum(history[-window:]) / window # mean of last 12 values
-	forecast_values.append(next_value) # append to forecast list
-	history.append(next_value) # add to history for next iteration
-forecast = pd.Series(forecast_values, index=future_dates) # create forecast series
+# forecast using moving average utility
+window = 12
+periods = 12
+forecast_values = moving_average_forecast(series[latest_vintage], window=window, periods=periods)
+future_dates = pd.date_range(series.index[-1] + pd.offsets.MonthBegin(), periods=periods, freq='MS')
+forecast = pd.Series(forecast_values, index=future_dates)
 
 # plot
 plt.figure(figsize=(10,5))
