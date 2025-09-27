@@ -1,3 +1,5 @@
+#this script scrapes the ONS website for CSV download links of employment data vintages, downloads the first 25 CSV files, and saves them locally with filenames that include their release dates.
+
 import requests
 import logging
 from bs4 import BeautifulSoup
