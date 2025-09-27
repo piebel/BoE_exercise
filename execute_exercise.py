@@ -1,7 +1,5 @@
 
 # Ensure requirements are installed before importing other modules
-import importlib.util
-import importlib
 import subprocess
 import sys
 import os
