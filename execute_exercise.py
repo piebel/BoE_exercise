@@ -4,33 +4,13 @@ import subprocess
 import sys
 import os
 
-# Ensure pkg_resources is available (install setuptools if needed)
+# Install requirements at the start
 try:
-    import pkg_resources
-except ImportError:
-    print("pkg_resources not found. Installing setuptools...")
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'setuptools'])
-    import pkg_resources
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', '-r', 'requirements.txt'])
+except subprocess.CalledProcessError as e:
+    print(f"Failed to install requirements: {e}")
+    sys.exit(1)
 
-
-
-# Check if all requirements are installed
-def check_requirements(requirements_file='requirements.txt'):
-    """Check if all requirements in requirements.txt are installed."""
-    try:
-        with open(requirements_file) as f:
-            requirements = f.read().splitlines()
-        pkg_resources.require(requirements)
-        print("All requirements are satisfied.")
-    except pkg_resources.DistributionNotFound as e:
-        print(f"Missing package: {e.report()}")
-        sys.exit(1)
-    except pkg_resources.VersionConflict as e:
-        print(f"Version conflict: {e.report()}")
-        sys.exit(1)
-
-# Check requirements before running anything else
-check_requirements()
 
 import logging
 logging.basicConfig(level=logging.INFO)
