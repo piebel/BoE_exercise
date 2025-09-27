@@ -24,7 +24,7 @@ This project downloads, processes, visualizes, and forecasts UK vacancy data vin
    ```
 
 
-2. **Create a Python 3.12 virtual environment** (recommended):
+2. **Suggested Create a Python 3.12 virtual environment ** (optional):
   Create the correct environment with:
    ```sh
    py -3.12 -m venv boe_exercise-env
