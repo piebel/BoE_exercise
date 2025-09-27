@@ -3,6 +3,8 @@
 import subprocess
 import sys
 import os
+import json
+
 
 # Install requirements at the start
 try:
@@ -15,7 +17,18 @@ except subprocess.CalledProcessError as e:
 import logging
 logging.basicConfig(level=logging.INFO)
 
-# Define the scripts in the correct order
+
+# --- Proxy configuration --- for instance, ECB requires proxies to access external sites
+proxies = {
+    # Example: uncomment and edit as needed
+    # 'http': 'http://proxy.example.com:8080',
+    # 'https': 'http://proxy.example.com:8080',
+}
+
+# Save proxies to a file for use by _1_ingest_data.py
+with open('proxies.json', 'w') as f:
+    json.dump(proxies, f)
+
 scripts = [
     os.path.join('src', '_1_ingest_data.py'),
     os.path.join('src', '_2_prepare_data.py'),

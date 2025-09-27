@@ -20,13 +20,15 @@ dest_folder = "input_data"
 os.makedirs(dest_folder, exist_ok=True)
 
 
-# Allow for proxies via environment variables (HTTP_PROXY, HTTPS_PROXY)
-proxies = {
-    'http': os.environ.get('HTTP_PROXY'),
-    'https': os.environ.get('HTTPS_PROXY')
-}
-# Remove None values if not set
-proxies = {k: v for k, v in proxies.items() if v}
+
+# Load proxies from proxies.json if present
+import json
+proxies = {}
+try:
+    with open(os.path.join(os.path.dirname(__file__), '..', 'proxies.json'), 'r') as f:
+        proxies = json.load(f)
+except Exception:
+    pass
 
 for i, link in enumerate(csv_links):
     logging.info(f"Downloading {link}...")

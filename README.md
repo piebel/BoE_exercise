@@ -25,10 +25,22 @@ This project downloads, processes, visualizes, and forecasts UK vacancy data vin
 
 2. **Install Python 3.8+** (if not already installed).
 
-3. **Install dependencies** (automatically handled by `run_all.py`, or manually):
+
+3. **Install dependencies** (automatically handled by `execute_exercise.py`, or manually):
    ```sh
    pip install -r requirements.txt
    ```
+
+## Proxy Support
+
+You can define HTTP/HTTPS proxies in the `execute_exercise.py` script by editing the `proxies` dictionary. These settings will be saved to `proxies.json` and used by the ingestion script for all downloads. Example:
+
+```python
+proxies = {
+    'http': 'http://proxy.example.com:8080',
+    'https': 'http://proxy.example.com:8080',
+}
+```
 
 ## Usage
 
