@@ -1,0 +1,14 @@
+For each vintage (i.e., each historical CSV), we can pretend it is the “latest” available at that time, 
+then we can only data up to that vintage to fit your model and forecast the next 12 months.
+
+Finally, we compare these forecasts to the actual values that appear in later vintages for those months.
+
+To evaluate forecast errors we can using metrics such as MAE (Mean Absolute Error), RMSE (Root Mean Squared Error), or MAPE (Mean Absolute Percentage Error).
+Do this for each forecast horizon (e.g., 1-month ahead, 2-months ahead, ..., 12-months ahead).
+
+Model Improvements:
+
+Due to time contraints and little analysis of the data, I opted for a failrly simple model, but potentially more advanced models could be tested.
+Particularly autoregressive models, as intuitively vacancies figures as well as trends can be accurately predicted by previous values and previous trends.
+
+The forecasting could be additionally improved with outliers detections and incorporatio of seasonality.
