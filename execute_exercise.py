@@ -1,5 +1,4 @@
 
-
 # Ensure requirements are installed before importing other modules
 import importlib.util
 import importlib
@@ -7,28 +6,35 @@ import subprocess
 import sys
 import os
 
-def _install_missing_requirements(requirements_path):
-    """Install missing Python packages listed in a requirements file.
+# Ensure pkg_resources is available (install setuptools if needed)
+try:
+    import pkg_resources
+except ImportError:
+    print("pkg_resources not found. Installing setuptools...")
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'setuptools'])
+    import pkg_resources
 
-    Args:
-        requirements_path (str): The path to the requirements file.
 
-    Raises:
-        ImportError: If src._0_utils cannot be found.
-    """
-    spec = importlib.util.find_spec('src._0_utils')
-    if spec is None:
-        raise ImportError('src._0_utils must be present in src directory.')
-    _0_utils = importlib.import_module('src._0_utils')
-    _0_utils.install_missing_requirements(requirements_path)
 
-requirements_path = os.path.join(os.path.dirname(__file__), 'requirements.txt')
-_install_missing_requirements(requirements_path)
+# Check if all requirements are installed
+def check_requirements(requirements_file='requirements.txt'):
+    """Check if all requirements in requirements.txt are installed."""
+    try:
+        with open(requirements_file) as f:
+            requirements = f.read().splitlines()
+        pkg_resources.require(requirements)
+        print("All requirements are satisfied.")
+    except pkg_resources.DistributionNotFound as e:
+        print(f"Missing package: {e.report()}")
+        sys.exit(1)
+    except pkg_resources.VersionConflict as e:
+        print(f"Version conflict: {e.report()}")
+        sys.exit(1)
+
+# Check requirements before running anything else
+check_requirements()
 
 import logging
-
-
-
 logging.basicConfig(level=logging.INFO)
 
 # Define the scripts in the correct order
