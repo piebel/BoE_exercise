@@ -1,19 +1,3 @@
-"""
-utils.py
-This module contains utility functions shared across the project scripts.
-"""
-
-import os
-import re
-import pandas as pd
-import requests
-from bs4 import BeautifulSoup
-from datetime import datetime
-import tkinter as tk
-from tkinter import ttk
-import importlib.util
-import subprocess
-import sys
 
 def install_missing_requirements(requirements_path):
     """Install missing Python packages listed in a requirements file.
@@ -21,6 +5,9 @@ def install_missing_requirements(requirements_path):
     Args:
         requirements_path (str): The path to the requirements file.
     """
+    import importlib.util
+    import subprocess
+    import sys
     with open(requirements_path) as f:
         required = [line.strip() for line in f if line.strip() and not line.startswith('#')]
     missing = []
@@ -33,6 +20,16 @@ def install_missing_requirements(requirements_path):
         subprocess.check_call([sys.executable, '-m', 'pip', 'install', *missing])
     else:
         print("All required packages are already installed.")
+
+
+import os
+import re
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+from datetime import datetime
+import tkinter as tk
+from tkinter import ttk
 
 
 # --- Ingest Data Utilities ---
